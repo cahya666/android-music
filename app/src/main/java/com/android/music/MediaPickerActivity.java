@@ -17,6 +17,7 @@
 package com.android.music;
 
 import com.android.music.MusicUtils.ServiceToken;
+import com.android.music.logger.BadSymptoms;
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -40,6 +41,8 @@ public class MediaPickerActivity extends ListActivity implements MusicUtils.Defs
 {
     private ServiceToken mToken;
 
+    BadSymptoms badSymptoms;
+
     public MediaPickerActivity()
     {
     }
@@ -62,6 +65,8 @@ public class MediaPickerActivity extends ListActivity implements MusicUtils.Defs
         }
         mToken = MusicUtils.bindToService(this);
         init();
+
+        badSymptoms = new BadSymptoms(this);
     }
 
     @Override

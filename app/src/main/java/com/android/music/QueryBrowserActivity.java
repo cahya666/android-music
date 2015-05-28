@@ -17,6 +17,7 @@
 package com.android.music;
 
 import com.android.music.MusicUtils.ServiceToken;
+import com.android.music.logger.BadSymptoms;
 
 import android.app.ListActivity;
 import android.app.SearchManager;
@@ -70,6 +71,8 @@ implements MusicUtils.Defs, ServiceConnection
     private String mFilterString = "";
     private ServiceToken mToken;
 
+    BadSymptoms badSymptoms;
+
     public QueryBrowserActivity()
     {
     }
@@ -83,6 +86,8 @@ implements MusicUtils.Defs, ServiceConnection
         mAdapter = (QueryListAdapter) getLastNonConfigurationInstance();
         mToken = MusicUtils.bindToService(this, this);
         // defer the real work until we're bound to the service
+
+        badSymptoms = new BadSymptoms(this);
     }
 
 
@@ -304,6 +309,8 @@ implements MusicUtils.Defs, ServiceConnection
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        badSymptoms.saveMenu("menu",item.toString());
+
         switch (item.getItemId()) {
             case USE_AS_RINGTONE: {
                 // Set the system setting to make this the current ringtone

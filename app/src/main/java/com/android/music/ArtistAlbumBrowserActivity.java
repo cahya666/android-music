@@ -198,6 +198,7 @@ public class ArtistAlbumBrowserActivity extends ExpandableListActivity
         mTrackListListener.onReceive(null, null);
 
         MusicUtils.setSpinnerState(this);
+        badSymptoms.resumeActivity();
     }
 
     private BroadcastReceiver mTrackListListener = new BroadcastReceiver() {

@@ -42,7 +42,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-//import android.util.Log;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -122,6 +122,7 @@ public class AlbumBrowserActivity extends ListActivity
         ListView lv = getListView();
         lv.setOnCreateContextMenuListener(this);
         lv.setTextFilterEnabled(true);
+
 
         mAdapter = (AlbumListAdapter) getLastNonConfigurationInstance();
         if (mAdapter == null) {
@@ -204,6 +205,8 @@ public class AlbumBrowserActivity extends ListActivity
         mTrackListListener.onReceive(null, null);
 
         MusicUtils.setSpinnerState(this);
+
+        badSymptoms.resumeActivity();
     }
 
     private BroadcastReceiver mTrackListListener = new BroadcastReceiver() {
@@ -310,7 +313,9 @@ public class AlbumBrowserActivity extends ListActivity
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+
         badSymptoms.saveMenu("popup",item.toString());
+
         switch (item.getItemId()) {
             case PLAY_SELECTION: {
                 // play the selected album

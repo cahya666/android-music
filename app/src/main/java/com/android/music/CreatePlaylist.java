@@ -35,11 +35,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.music.logger.BadSymptoms;
+
 public class CreatePlaylist extends Activity
 {
     private EditText mPlaylist;
     private TextView mPrompt;
     private Button mSaveButton;
+
+    BadSymptoms badSymptoms;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -73,6 +77,8 @@ public class CreatePlaylist extends Activity
         mPlaylist.setText(defaultname);
         mPlaylist.setSelection(defaultname.length());
         mPlaylist.addTextChangedListener(mTextWatcher);
+
+        badSymptoms = new BadSymptoms(this);
     }
     
     TextWatcher mTextWatcher = new TextWatcher() {
@@ -123,6 +129,8 @@ public class CreatePlaylist extends Activity
     @Override
     public void onResume() {
         super.onResume();
+
+        badSymptoms.resumeActivity();
     }
 
     private String makePlaylistName() {

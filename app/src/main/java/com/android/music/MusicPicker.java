@@ -45,6 +45,8 @@ import android.widget.SectionIndexer;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import com.android.music.logger.BadSymptoms;
+
 import java.io.IOException;
 import java.text.Collator;
 import java.util.Formatter;
@@ -401,6 +403,7 @@ public class MusicPicker extends ListActivity
         }
     }
 
+    BadSymptoms badSymptoms;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle icicle) {
@@ -483,6 +486,8 @@ public class MusicPicker extends ListActivity
         }
         
         setSortMode(sortMode);
+
+        badSymptoms = new BadSymptoms(this);
     }
 
     @Override public void onRestart() {
@@ -491,6 +496,9 @@ public class MusicPicker extends ListActivity
     }
     
     @Override public boolean onOptionsItemSelected(MenuItem item) {
+
+        badSymptoms.saveMenu("menu",item.toString());
+
         if (setSortMode(item.getItemId())) {
             return true;
         }

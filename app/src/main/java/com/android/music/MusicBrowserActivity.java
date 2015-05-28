@@ -17,6 +17,7 @@
 package com.android.music;
 
 import com.android.music.MusicUtils.ServiceToken;
+import com.android.music.logger.BadSymptoms;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -30,6 +31,8 @@ public class MusicBrowserActivity extends Activity
     implements MusicUtils.Defs {
 
     private ServiceToken mToken;
+
+    BadSymptoms badSymptoms;
 
     public MusicBrowserActivity() {
     }
@@ -53,6 +56,7 @@ public class MusicBrowserActivity extends Activity
         if ("true".equals(shuf)) {
             mToken = MusicUtils.bindToService(this, autoshuffle);
         }
+        badSymptoms = new BadSymptoms(this);
     }
 
     @Override

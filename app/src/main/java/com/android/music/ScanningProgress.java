@@ -27,6 +27,8 @@ import android.provider.MediaStore;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.android.music.logger.BadSymptoms;
+
 public class ScanningProgress extends Activity
 {
     private final static int CHECK = 0;
@@ -59,6 +61,8 @@ public class ScanningProgress extends Activity
         }
     };
 
+    BadSymptoms badSymptoms;
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -76,6 +80,8 @@ public class ScanningProgress extends Activity
         
         Message msg = mHandler.obtainMessage(CHECK);
         mHandler.sendMessageDelayed(msg, 1000);
+
+        badSymptoms = new BadSymptoms(this);
     }
     
     @Override

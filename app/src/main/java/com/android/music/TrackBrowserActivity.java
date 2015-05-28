@@ -17,6 +17,7 @@
 package com.android.music;
 
 import com.android.music.MusicUtils.ServiceToken;
+import com.android.music.logger.BadSymptoms;
 
 import android.app.ListActivity;
 import android.app.SearchManager;
@@ -102,6 +103,8 @@ public class TrackBrowserActivity extends ListActivity
     private boolean mUseLastListPos = false;
     private ServiceToken mToken;
 
+    BadSymptoms badSymptoms;
+
     public TrackBrowserActivity()
     {
     }
@@ -186,6 +189,8 @@ public class TrackBrowserActivity extends ListActivity
                 setAlbumArtBackground();
             }
         });
+
+        badSymptoms = new BadSymptoms(this);
     }
 
     public void onServiceConnected(ComponentName name, IBinder service)
@@ -310,6 +315,8 @@ public class TrackBrowserActivity extends ListActivity
             getListView().invalidateViews();
         }
         MusicUtils.setSpinnerState(this);
+
+        badSymptoms.resumeActivity();
     }
     @Override
     public void onPause() {
@@ -679,6 +686,8 @@ public class TrackBrowserActivity extends ListActivity
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        badSymptoms.saveMenu("popup",item.toString());
+
         switch (item.getItemId()) {
             case PLAY_SELECTION: {
                 // play the track
@@ -932,6 +941,7 @@ public class TrackBrowserActivity extends ListActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        badSymptoms.saveMenu("menu",item.toString());
         Intent intent;
         Cursor cursor;
         switch (item.getItemId()) {

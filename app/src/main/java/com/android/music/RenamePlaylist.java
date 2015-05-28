@@ -34,6 +34,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.music.logger.BadSymptoms;
+
 public class RenamePlaylist extends Activity
 {
     private EditText mPlaylist;
@@ -41,6 +43,8 @@ public class RenamePlaylist extends Activity
     private Button mSaveButton;
     private long mRenameId;
     private String mOriginalName;
+
+    BadSymptoms badSymptoms;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -87,6 +91,8 @@ public class RenamePlaylist extends Activity
         mPlaylist.setSelection(defaultname.length());
         mPlaylist.addTextChangedListener(mTextWatcher);
         setSaveButton();
+
+        badSymptoms = new BadSymptoms(this);
     }
     
     TextWatcher mTextWatcher = new TextWatcher() {
@@ -162,6 +168,8 @@ public class RenamePlaylist extends Activity
     @Override
     public void onResume() {
         super.onResume();
+
+        badSymptoms.resumeActivity();
     }
 
     private View.OnClickListener mOpenClicked = new View.OnClickListener() {

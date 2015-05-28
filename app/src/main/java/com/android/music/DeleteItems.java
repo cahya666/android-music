@@ -25,11 +25,15 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.music.logger.BadSymptoms;
+
 public class DeleteItems extends Activity
 {
     private TextView mPrompt;
     private Button mButton;
     private long [] mItemList;
+
+    BadSymptoms badSymptoms;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -56,6 +60,8 @@ public class DeleteItems extends Activity
         mItemList = b.getLongArray("items");
         
         mPrompt.setText(desc);
+
+        badSymptoms = new BadSymptoms(this);
     }
     
     private View.OnClickListener mButtonClicked = new View.OnClickListener() {

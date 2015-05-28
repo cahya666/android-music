@@ -24,9 +24,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.android.music.logger.BadSymptoms;
+
 public class WeekSelector extends Activity
 {
     VerticalTextSpinner mWeeks;
+    BadSymptoms badSymptoms;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -55,6 +58,8 @@ public class WeekSelector extends Activity
                 finish();
             }
         });
+
+        badSymptoms = new BadSymptoms(this);
     }
     
     @Override
@@ -65,6 +70,8 @@ public class WeekSelector extends Activity
     @Override
     public void onResume() {
         super.onResume();
+
+        badSymptoms.resumeActivity();
     }
     
     private View.OnClickListener mListener = new View.OnClickListener() {

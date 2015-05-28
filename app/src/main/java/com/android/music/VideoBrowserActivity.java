@@ -28,10 +28,13 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import com.android.music.logger.BadSymptoms;
+
 import java.lang.Integer;
 
 public class VideoBrowserActivity extends ListActivity implements MusicUtils.Defs
 {
+    BadSymptoms badSymptoms;
     public VideoBrowserActivity()
     {
     }
@@ -43,6 +46,8 @@ public class VideoBrowserActivity extends ListActivity implements MusicUtils.Def
         super.onCreate(icicle);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         init();
+
+        badSymptoms = new BadSymptoms(this);
     }
 
     public void init() {

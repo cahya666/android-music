@@ -507,6 +507,8 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
         super.onResume();
         updateTrackInfo();
         setPauseButtonImage();
+
+        badSymptoms.resumeActivity();
     }
     
     @Override
@@ -576,7 +578,7 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        badSymptoms.saveMenu(item.toString());
+        badSymptoms.saveMenu("menu",item.toString());
 
         Intent intent;
         try {

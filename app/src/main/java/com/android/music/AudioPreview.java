@@ -48,6 +48,8 @@ import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 
+import com.android.music.logger.BadSymptoms;
+
 import java.io.IOException;
 
 /**
@@ -70,6 +72,7 @@ public class AudioPreview extends Activity implements OnPreparedListener, OnErro
     private static final int OPEN_IN_MUSIC = 1;
     private AudioManager mAudioManager;
     private boolean mPausedByTransientLossOfFocus;
+    BadSymptoms badSymptoms;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -192,6 +195,8 @@ public class AudioPreview extends Activity implements OnPreparedListener, OnErro
                 setNames();
             }
         }
+
+        badSymptoms = new BadSymptoms(this);
     }
 
     @Override
@@ -210,6 +215,8 @@ public class AudioPreview extends Activity implements OnPreparedListener, OnErro
         if (mPlayer.isPrepared()) {
             showPostPrepareUI();
         }
+
+        badSymptoms.resumeActivity();
     }
 
     @Override

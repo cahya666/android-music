@@ -220,6 +220,7 @@ public class PlaylistBrowserActivity extends ListActivity
 
         MusicUtils.setSpinnerState(this);
         MusicUtils.updateNowPlaying(PlaylistBrowserActivity.this);
+        badSymptoms.resumeActivity();
     }
     @Override
     public void onPause() {
