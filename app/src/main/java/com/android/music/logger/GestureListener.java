@@ -21,7 +21,6 @@ import android.view.MotionEvent;
 
 public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
-    public static final String TAG = "BadSymptoms";
     String application,activity,view;
 
     public  GestureListener (String application, String activity){
@@ -40,7 +39,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
         // Up motion completing a single tap occurred.
-        //Log.i(TAG, "Single Tap Up");
+        // Log.i(TAG, "Single Tap Up");
         return false;
     }
 
@@ -49,7 +48,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         // Touch has been long enough to indicate a long press.
         // Does not indicate motion is complete yet (no up event necessarily)
 
-        Log.i(TAG, "Long Press");
+        // Log.i(TAG, "Long Press");
         jSonActivity("Long Press");
     }
 
@@ -57,9 +56,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
     float distanceY) {
         // User attempted to scroll
-
-        //Log.i(TAG, jSonActivity("Scroll"));
-        //Log.i(TAG, "Scroll");
+        // Log.i(TAG, "Scroll");
         return false;
     }
 
@@ -67,14 +64,14 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
     float velocityY) {
         // Fling event occurred.  Notification of this one happens after an "up" event.
-        //Log.i(TAG, "Fling");
+        // Log.i(TAG, "Fling");
         return false;
     }
 
     @Override
     public void onShowPress(MotionEvent e) {
         // User performed a down event, and hasn't moved yet.
-        //Log.i(TAG, "Show Press");
+        // Log.i(TAG, "Show Press");
     }
 
     @Override
@@ -87,7 +84,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     @Override
     public boolean onDoubleTap(MotionEvent e) {
         // User tapped the screen twice.
-        Log.i(TAG, "Double tap");
+        //Log.i(TAG, "Double tap");
         jSonActivity("Double tap");
         return false;
     }
@@ -97,7 +94,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         // Since double-tap is actually several events which are considered one aggregate
         // gesture, there's a separate callback for an individual event within the doubletap
         // occurring.  This occurs for down, up, and move.
-        //Log.i(TAG, "Event within double tap");
+        // Log.i(TAG, "Event within double tap");
         return false;
     }
 
@@ -106,7 +103,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         // A confirmed single-tap event has occurred.  Only called when the detector has
         // determined that the first tap stands alone, and is not part of a double tap.
 
-        Log.i(TAG, "Touch");
+        // Log.i(TAG, "Touch");
         jSonActivity("Touch");
         return false;
     }

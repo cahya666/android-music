@@ -1,14 +1,19 @@
 package com.android.music.logger;
 
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,7 +30,7 @@ public class LogSave {
         File file = new File(myDir,fileName+".txt");
         FileOutputStream fout = null;
         try {
-            fout = new FileOutputStream(file,true);
+            fout = new FileOutputStream(file,false);
             //System.out.println(file.toString());
             fout.write(text.getBytes());
             fout.close();
@@ -37,16 +42,35 @@ public class LogSave {
     static void jSonSave(String user,String application,String activity,String view,String event) {
         SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
         String timestamp = format.format(new Date());
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("user", user);
-            jsonObject.put("application", application);
-            jsonObject.put("activity", activity);
-            jsonObject.put("view", view);
-            jsonObject.put("event", event);
-            jsonObject.put("timestamp", timestamp);
 
-            fileSave(jsonObject.toString() + ",", application);
+        String jsonText = jsonText(application);
+        try {
+
+            JSONObject jsonObject;
+            JSONArray array;
+            if (jsonText.isEmpty()) {
+                jsonObject = new JSONObject();
+                array = new JSONArray();
+            } else {
+                jsonObject = new JSONObject(jsonText);
+                array = jsonObject.getJSONArray(application);
+            }
+
+            JSONObject data = new JSONObject();
+            data.put("user", user);
+            //data.put("application", application);
+            data.put("activity", activity);
+            data.put("view", view);
+            data.put("event", event);
+            data.put("timestamp", timestamp);
+
+            array.put(data);
+
+            jsonObject.put(application, array);
+
+            fileSave(jsonObject.toString(), application);
+
+            Log.i("json", jsonObject.toString());
 
         } catch (JSONException ex) {
             ex.printStackTrace();
@@ -54,34 +78,30 @@ public class LogSave {
 
     }
 
-    static ArrayList<View> getAllChildren(View v) {
-        if (!(v instanceof ViewGroup)) {
-            ArrayList<View> viewArrayList = new ArrayList<View>();
+    static String jsonText(String filename){
+        StringBuilder text = new StringBuilder();
+        String result="";
 
-            if (!(v.getId() < 0 )) {
-                    viewArrayList.add(v);
+        try {
+            File root = Environment.getExternalStorageDirectory();
+            File myDir = new File(root + "/Tesis");
+            myDir.mkdirs();
+            File file = new File(myDir,filename + ".txt");
+
+            if (file.exists()){
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    text.append(line);
+                    text.append('\n');
+                }
+                br.close();
+                result = text.toString();
             }
-
-            return viewArrayList;
+        }catch (IOException e) {
+            e.printStackTrace();
         }
 
-        ArrayList<View> result = new ArrayList<View>();
-
-        ViewGroup vg = (ViewGroup) v;
-        for (int i = 0; i < vg.getChildCount(); i++) {
-
-            View child = vg.getChildAt(i);
-
-            ArrayList<View> viewArrayList = new ArrayList<View>();
-
-            if (!(v.getId() < 0 )) {
-                    viewArrayList.add(v);
-            }
-
-            viewArrayList.addAll(getAllChildren(child));
-
-            result.addAll(viewArrayList);
-        }
         return result;
     }
 
