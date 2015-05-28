@@ -1,20 +1,19 @@
 package com.android.music.logger;
 
 import android.app.Activity;
+import android.app.ExpandableListActivity;
+import android.app.ListActivity;
 import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-
+import android.view.ViewGroup;
+import android.widget.ListView;
 import java.util.ArrayList;
 
-/**
- * Created by cahya on 25/05/2015.
- */
 public class BadSymptoms {
     private GestureDetector gestureDetector;
     private String application,activityName;
-    private static final String TAG ="BadSymptoms";
     private Activity activity;
     private GestureListener gestureListener;
 
@@ -25,20 +24,28 @@ public class BadSymptoms {
         application = getApplicationName(context);
         activityName = this.activity.getClass().getSimpleName();
 
-        initializeLogging();
-
         gestureListener = new GestureListener(application,activityName);
-
         gestureDetector = new GestureDetector(context, gestureListener);
 
-        allView = LogSave.getAllChildren(activity.getWindow().getDecorView().getRootView());
+        allView = getAllChildren(activity.getWindow().getDecorView().getRootView());
         logView();
+
+        if (activity instanceof ListActivity) {
+            ListActivity listActivity = (ListActivity) activity;
+            ListView lv = listActivity.getListView();
+            onTouch(lv);
+        }
+
+        if (activity instanceof ExpandableListActivity) {
+            ExpandableListActivity expandableListActivity = (ExpandableListActivity) activity;
+            ListView lv = expandableListActivity.getExpandableListView();
+            onTouch(lv);
+        }
     }
 
     private void logView() {
         for (View child : allView) {
             if (child instanceof View) {
-//                Log.i("allview", viewName(child));
                 onTouch(child);
             }
         }
@@ -56,14 +63,8 @@ public class BadSymptoms {
         this.gestureDetector = gestureDetector;
     }
 
-    public void initializeLogging() {
-
-        LogWrapper logWrapper = new LogWrapper();
-        Log.setLogNode(logWrapper);
-
-        Log.i(TAG, application);
-
-        LogSave.jSonSave("user", application, activityName, "", "login");
+    public void resumeActivity() {
+        //jSonSave("user", application, activityName, "", "login");
     }
 
      public void onTouch(View view) {
@@ -94,5 +95,33 @@ public class BadSymptoms {
         LogSave.jSonSave("user", application, activityName, jenis+" : "+menu, "Touch");
     }
 
+    public ArrayList<View> getAllChildren(View v) {
+        if (!(v instanceof ViewGroup)) {
+            ArrayList<View> viewArrayList = new ArrayList<View>();
 
+            if (!(v.getId() < 0 )) {
+                viewArrayList.add(v);
+            }
+            return viewArrayList;
+        }
+
+        ArrayList<View> result = new ArrayList<View>();
+
+        ViewGroup vg = (ViewGroup) v;
+        for (int i = 0; i < vg.getChildCount(); i++) {
+
+            View child = vg.getChildAt(i);
+
+            ArrayList<View> viewArrayList = new ArrayList<View>();
+
+            if (!(v.getId() < 0 )) {
+                viewArrayList.add(v);
+            }
+
+            viewArrayList.addAll(getAllChildren(child));
+
+            result.addAll(viewArrayList);
+        }
+        return result;
+    }
 }
