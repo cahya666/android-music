@@ -34,7 +34,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     private void jSonActivity(String msg) {
         LogSave.jSonSave("user",this.application,this.activity,this.view,msg);
-        LogSave.printLog(this.application);
+        //LogSave.printLog(this.application);
     }
 
     @Override

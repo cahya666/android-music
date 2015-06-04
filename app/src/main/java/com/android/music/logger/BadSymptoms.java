@@ -1,23 +1,32 @@
 package com.android.music.logger;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.ExpandableListActivity;
 import android.app.ListActivity;
 import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import com.android.music.logger.activitylifecyclecallbackscompat.ActivityLifecycleCallbacksCompat;
+import com.android.music.logger.activitylifecyclecallbackscompat.ApplicationHelper;
+
 import java.util.ArrayList;
 
 public class BadSymptoms {
+    private boolean LOGOUT = false;
     private GestureDetector gestureDetector;
     private String application,activityName;
     private Activity activity;
     private GestureListener gestureListener;
-
+    private Application app;
     private ArrayList<View> allView;
+
 
     public BadSymptoms(Context context){
         activity = (Activity) context;
@@ -41,6 +50,51 @@ public class BadSymptoms {
             ListView lv = expandableListActivity.getExpandableListView();
             onTouch(lv);
         }
+        app = activity.getApplication();
+        ApplicationHelper.registerActivityLifecycleCallbacks(app, new ActivityLifecycleCallbacksCompat() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                if (LOGOUT)
+                Log.i("callBack", "onActivityCreated " + activity.getClass());
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+                if (LOGOUT)
+                Log.i("callBack", "onActivityStarted " + activity.getClass());
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+                if (LOGOUT)
+                Log.i("callBack", "onActivityResumed " + activity.getClass());
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+                LogSave.printLog(application);
+                if (LOGOUT)
+                Log.i("callBack", "onActivityPaused " + activity.getClass());
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+                if (LOGOUT)
+                Log.i("callBack", "onActivityStopped " + activity.getClass());
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+                if (LOGOUT)
+                Log.i("callBack", "onActivitySaveInstanceState " + activity.getClass());
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                if (LOGOUT)
+                Log.i("callBack", "onActivityDestroyed " + activity.getClass());
+            }
+        });
     }
 
     private void logView() {
@@ -92,8 +146,8 @@ public class BadSymptoms {
     }
 
     public void saveMenu(String jenis,String menu){
-        LogSave.jSonSave("user", application, activityName, jenis+" : "+menu, "Touch");
-        LogSave.printLog(application);
+        LogSave.jSonSave("user", application, activityName, jenis + " : " + menu, "Touch");
+        //LogSave.printLog(application);
     }
 
     public ArrayList<View> getAllChildren(View v) {
