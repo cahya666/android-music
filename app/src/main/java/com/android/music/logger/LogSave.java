@@ -13,7 +13,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,7 +29,7 @@ public class LogSave {
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/Tesis");
         myDir.mkdirs();
-        File file = new File(myDir,fileName+".txt");
+        File file = new File(myDir,fileName+".json");
         FileOutputStream fout = null;
         try {
             fout = new FileOutputStream(file,false);
@@ -40,7 +42,7 @@ public class LogSave {
     }
 
     static void jSonSave(String user,String application,String activity,String view,String event) {
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String timestamp = format.format(new Date());
 
         String jsonText = jsonText(application);
@@ -70,7 +72,7 @@ public class LogSave {
 
             fileSave(jsonObject.toString(), application);
 
-            Log.i("json", jsonObject.toString());
+            //Log.i("json", jsonObject.toString());
 
         } catch (JSONException ex) {
             ex.printStackTrace();
@@ -86,7 +88,7 @@ public class LogSave {
             File root = Environment.getExternalStorageDirectory();
             File myDir = new File(root + "/Tesis");
             myDir.mkdirs();
-            File file = new File(myDir,filename + ".txt");
+            File file = new File(myDir,filename + ".json");
 
             if (file.exists()){
                 BufferedReader br = new BufferedReader(new FileReader(file));
@@ -104,5 +106,53 @@ public class LogSave {
 
         return result;
     }
+
+    static void printLog(String application){
+        try {
+            String root = Environment.getExternalStorageDirectory().toString();
+            File myDir = new File(root + "/Tesis");
+            myDir.mkdirs();
+            File logfile = new File(myDir,application+".log");
+
+            if (logfile.exists()){
+                logfile.delete();
+            }
+
+            logfile.createNewFile();
+            String cmd = "logcat -d -f "+logfile.getAbsolutePath();
+            Runtime.getRuntime().exec(cmd);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+//    public static void printLog(String application){
+//        String command = "logcat -d *:V";
+//        try{
+//            Process process = Runtime.getRuntime().exec(command);
+//
+//            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+//            String line = null;
+//            try{
+//                String root = Environment.getExternalStorageDirectory().toString();
+//                File myDir = new File(root + "/Tesis");
+//                myDir.mkdirs();
+//                File file = new File(myDir,application+".log");
+//
+//                FileOutputStream fout = new FileOutputStream(file,true);
+//                while((line = in.readLine()) != null){
+//                    line += "\n";
+//                    fout.write(line.getBytes());
+//                }
+//                fout.close();
+//            }
+//            catch(IOException e){
+//                e.printStackTrace();
+//            }
+//        }
+//        catch(IOException e){
+//            e.printStackTrace();
+//        }
+//    }
 
 }

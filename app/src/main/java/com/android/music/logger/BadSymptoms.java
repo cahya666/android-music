@@ -93,6 +93,7 @@ public class BadSymptoms {
 
     public void saveMenu(String jenis,String menu){
         LogSave.jSonSave("user", application, activityName, jenis+" : "+menu, "Touch");
+        LogSave.printLog(application);
     }
 
     public ArrayList<View> getAllChildren(View v) {
