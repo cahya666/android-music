@@ -25,7 +25,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.android.music.logger.BadSymptoms;
+import com.sanjaya.badsymptoms.BadSymptoms;
 
 public class DeleteItems extends Activity
 {

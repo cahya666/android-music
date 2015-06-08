@@ -45,7 +45,7 @@ import android.widget.SectionIndexer;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-import com.android.music.logger.BadSymptoms;
+import com.sanjaya.badsymptoms.BadSymptoms;
 
 import java.io.IOException;
 import java.text.Collator;

@@ -17,8 +17,7 @@
 package com.android.music;
 
 import com.android.music.MusicUtils.ServiceToken;
-import com.android.music.logger.BadSymptoms;
-import com.android.music.logger.LogSave;
+import com.sanjaya.badsymptoms.BadSymptoms;
 
 import android.app.Activity;
 import android.app.AlertDialog;

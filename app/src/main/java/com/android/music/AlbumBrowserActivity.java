@@ -17,6 +17,7 @@
 package com.android.music;
 
 import com.android.music.MusicUtils.ServiceToken;
+import com.sanjaya.badsymptoms.BadSymptoms;
 
 import android.app.ListActivity;
 import android.app.SearchManager;
@@ -66,10 +67,6 @@ import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import java.text.Collator;
-
-import com.android.music.logger.BadSymptoms;
-
-
 import android.support.v4.view.MotionEventCompat;
 
 

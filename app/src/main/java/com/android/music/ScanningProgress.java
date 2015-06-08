@@ -27,7 +27,7 @@ import android.provider.MediaStore;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.android.music.logger.BadSymptoms;
+import com.sanjaya.badsymptoms.BadSymptoms;
 
 public class ScanningProgress extends Activity
 {

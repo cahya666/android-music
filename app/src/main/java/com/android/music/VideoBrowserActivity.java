@@ -28,7 +28,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
-import com.android.music.logger.BadSymptoms;
+import com.sanjaya.badsymptoms.BadSymptoms;
 
 import java.lang.Integer;
 

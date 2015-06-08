@@ -35,7 +35,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.music.logger.BadSymptoms;
+import com.sanjaya.badsymptoms.BadSymptoms;
 
 public class CreatePlaylist extends Activity
 {
