@@ -11,11 +11,13 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -107,52 +109,93 @@ public class LogSave {
         return result;
     }
 
-    static void printLog(String application){
-        try {
-            String root = Environment.getExternalStorageDirectory().toString();
-            File myDir = new File(root + "/Tesis");
-            myDir.mkdirs();
-            File logfile = new File(myDir,application+".log");
-
-            if (logfile.exists()){
-                logfile.delete();
-            }
-
-            logfile.createNewFile();
-            String cmd = "logcat -d -f "+logfile.getAbsolutePath();
-            Runtime.getRuntime().exec(cmd);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-//    public static void printLog(String application){
-//        String command = "logcat -d *:V";
-//        try{
-//            Process process = Runtime.getRuntime().exec(command);
+//    static void printLog(String application){
+//        try {
+//            String root = Environment.getExternalStorageDirectory().toString();
+//            File myDir = new File(root + "/Tesis");
+//            myDir.mkdirs();
+//            File logfile = new File(myDir,application+".log");
 //
-//            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-//            String line = null;
-//            try{
-//                String root = Environment.getExternalStorageDirectory().toString();
-//                File myDir = new File(root + "/Tesis");
-//                myDir.mkdirs();
-//                File file = new File(myDir,application+".log");
+//            if (logfile.exists()){
+//                logfile.delete();
+//            }
 //
-//                FileOutputStream fout = new FileOutputStream(file,true);
-//                while((line = in.readLine()) != null){
-//                    line += "\n";
-//                    fout.write(line.getBytes());
-//                }
-//                fout.close();
-//            }
-//            catch(IOException e){
-//                e.printStackTrace();
-//            }
-//        }
-//        catch(IOException e){
+//            logfile.createNewFile();
+//            String cmd = "logcat -d -f "+logfile.getAbsolutePath()+" *:W";
+//            Runtime.getRuntime().exec(cmd);
+//        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
 //    }
 
+    public static void printLog(String application){
+        String command = "logcat -d -v tag *:W";
+        try{
+            Process process = Runtime.getRuntime().exec(command);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+//            String line = null;
+            try{
+                String root = Environment.getExternalStorageDirectory().toString();
+                File myDir = new File(root + "/Tesis");
+                myDir.mkdirs();
+                File file = new File(myDir,application+".log");
+
+                FileOutputStream fout = new FileOutputStream(file,true);
+
+                while (true) {
+                    String line = in.readLine();
+                    if (line == null) {
+                        break;
+                    }
+                    if (line.contains("E/") || line.contains("W/") ) {
+                        line += "\n";
+                        fout.write(line.getBytes());
+                    }
+                }
+                fout.close();
+
+                cleaningFile(file);
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private static void cleaningFile(File file){
+        try {
+            StringBuilder text = new StringBuilder();
+
+            FileInputStream fstream = new FileInputStream(file);
+
+            UniqueLineReader br = new UniqueLineReader(new InputStreamReader(fstream));
+            String strLine;
+            // Read File Line By Line
+            while ((strLine = br.readLine()) != null) {
+                text.append(strLine);
+                text.append('\n');
+            }
+            // Close the input stream
+            fstream.close();
+
+            simpanFile(file,text.toString());
+        } catch (Exception e) {// Catch exception if any
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    private static void simpanFile(File file,String text){
+        FileOutputStream fout = null;
+        try {
+            fout = new FileOutputStream(file,false);
+            fout.write(text.getBytes());
+            fout.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
